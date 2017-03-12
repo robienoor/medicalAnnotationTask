@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Theme Made By www.w3schools.com - No Copyright -->
+  <title>Medical Reviews Annotating</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script type ="text/javascript"  src="{{ url_for('static', filename='js/jquery-2.1.0.min.js') }}"></script>
+  <script type ="text/javascript"  src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script type ="text/javascript"  src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>  
+
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+ <!-- Progress -->
+<div class="container-fluid text-center">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Medical Reviews Annotation Task</h2>
+        </div>
+
+        <div class="col-sm-2">
+            <button id="saveAnnotations" type="button" class="btn" onclick="saveAnnotations()">
+                Save Current Annotation
+            </button>
+        </div>
+
+        <div class="col-sm-2">
+            <button id="viewProgress" type="button" class="btn" onclick="insertAnnotationsProgress()" data-toggle="modal" data-target="#myModal">
+                Tagged So Far 
+            </button>
+
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Left to Tag</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table id="progress-table" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>PostNo</th>
+                                        <th>Sentences Complete</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        </div>
+    </div>
+
+    <div class="progress">
+        <div class="progress-bar progress-bar-success" id="progress-bar" role="progressbar" aria-valuenow="60"
+                aria-valuemin="0" aria-valuemax="100" style="width:0%">
+        </div>
+    </div>
+       
+</div>
+
+<!-- Review Information -->
+<div class="container-fluid normal-container">
+  <div class="row">
+    <div class="col-sm-1">
+      <button onclick = "changeReview('left')">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+      </button>
+    </div>
+    <div class="col-sm-8" style="background-color: linen; border: 2px solid orange;">
+      <h3 id="ReviewNo" class="text-center"></h3>
+      <p id="Review"></p>
+    </div>
+    <div class="col-sm-1 text-center" style="background-color: linen; border: 2px solid orange;">
+        <h3>Rating</h3>
+        <p id="Rating"></p>
+    </div>
+    <div class="col-sm-1 text-center" style="background-color: linen; border: 2px solid orange;">
+        <h3>Drug</h3>
+        <p id="Drug"></p>
+    </div>
+    <div class="col-sm-1">
+      <button onclick = "changeReview('right')">
+        <span class="glyphicon glyphicon-arrow-right"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Sentence Information-->
+<div class="container-fluid normal-container">
+  <div class="row">
+    <div class="col-sm-1">
+      <button onclick = "changeSentence('left')">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+      </button>
+    </div>
+    <div class="col-sm-8 col-centered" style="background-color: linen;">
+      <h3 id="SentenceNo" class="text-center">Sentence</h3>
+      <p id="Sentence" class="text-center"></p>
+    </div>
+    <div class="col-sm-1">
+      <button onclick = "changeSentence('right')">
+        <span class="glyphicon glyphicon-arrow-right"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Class Choices -->
+<div class="container-fluid normal-container btn-group-wrap" style="background-color: grey;">
+  <div id="argTypes" class="btn-group">
+
+    <button id = "argType1" type="button" class="btn btn-danger" onclick = "selectArgumentType(this.id)">
+      Positive Experience
+      <br><br>
+      <span id="argTick" class="glyphicon glyphicon-ok hidden"></span>
+    </button>
+
+    <button id = "argType2" type="button" class="btn btn-danger" onclick = "selectArgumentType(this.id)">
+      Negative Experience
+      <br><br>
+      <span id="argTick" class="glyphicon glyphicon-ok hidden"></span>      
+    </button>
+
+    <button id = "argType3" type="button" class="btn btn-danger" onclick = "selectArgumentType(this.id)">
+      Side Effects Present
+      <br><br>
+      <span id="argTick" class="glyphicon glyphicon-ok hidden"></span>     
+    </button>
+
+    <button id = "argType4" type="button" class="btn btn-danger" onclick = "selectArgumentType(this.id)">
+      No Side Effects
+      <br><br>
+      <span id="argTick" class="glyphicon glyphicon-ok hidden"></span>       
+    </button>
+
+    <button id = "argType5" type="button" class="btn btn-danger" onclick = "selectArgumentType(this.id)">
+      Side Effects Painful
+      <br><br>
+      <span id="argTick" class="glyphicon glyphicon-ok hidden"></span>      
+    </button>
+
+    <button id = "argType6" type="button" class="btn btn-danger" onclick = "selectArgumentType(this.id)">
+      Bearable Side Effects
+      <br><br>
+      <span id="argTick" class="glyphicon glyphicon-ok hidden"></span>      
+    </button>
+
+    <button id = "argType7" type="button" class="btn btn-danger" onclick = "selectArgumentType(this.id)">
+      Before the medicine
+      <br><br>
+      <span id="argTick" class="glyphicon glyphicon-ok hidden"></span>      
+    </button>                  
+
+  </div>
+
+  <br>
+  <br>
+
+</div>
+
+    <form>
+    <div class="input-group">
+      <input type="text" class="form-control" id = "gotoarg" placeholder="Search">
+      <div class="input-group-btn">
+        <button class="btn btn-default" onclick="gotoReview()" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+      </div>
+    </div>
+  </form>
+
+<script type="text/javascript">
+  var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+
+ <script type ="text/javascript"  src="{{ url_for('static', filename='js/medicalReviewLoader.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+cd /Users/kawsarnoor/Desktop/Phd/Code/AnnotatingWebsite/testing/flaskTesting 
+export FLASK_APP=app.py
+export FLASK_DEBUG=1
+flask run
